@@ -1,0 +1,50 @@
+package com.example.dz1;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+
+new CalcSimpleNumbers().execute(1000L, 1000000000000L);
+}
+
+class CalcSimpleNumbers extends AsyncTask<Long, Long, Void> {
+@Override
+protected Void doInBackground(Long... longs) {
+long a = longs[0];
+long b = longs[1];
+
+for (long i = a; i < b; i++) { //
+boolean isSimple = true;
+for (long j = 2; j * j <= i; j++) {
+
+if (i % j == 0) {
+isSimple = false;
+break;
+}
+}
+if (isSimple)
+publishProgress(i);
+} //
+
+return null;
+}
+
+@Override
+protected void onProgressUpdate(Long... values) {
+super.onProgressUpdate(values);
+
+TextView text = findViewById(R.id.text);
+
+text.setText("" + values[0]);
+}
+}
+}
